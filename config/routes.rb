@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :vaccines, only: [:create]
+  resources :patients, only: [:create]
 end
