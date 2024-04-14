@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_14_025459) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_14_030125) do
   create_table "patients", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_025459) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
   end
 
   add_foreign_key "vaccine_cards", "patients"
