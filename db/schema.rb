@@ -10,11 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_14_011020) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_14_025459) do
   create_table "patients", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "vaccine_cards", force: :cascade do |t|
+    t.integer "patient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_vaccine_cards_on_patient_id"
+  end
+
+  create_table "vaccine_cards_vaccines", id: false, force: :cascade do |t|
+    t.integer "vaccine_id", null: false
+    t.integer "vaccine_card_id", null: false
   end
 
   create_table "vaccines", force: :cascade do |t|
@@ -23,4 +35,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_011020) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "vaccine_cards", "patients"
 end
