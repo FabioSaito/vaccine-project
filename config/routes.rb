@@ -10,4 +10,5 @@ Rails.application.routes.draw do
 
   resources :vaccines, only: [:create]
   resources :patients, only: [:create]
+  resources :vaccinate, only: [:create]
 end
