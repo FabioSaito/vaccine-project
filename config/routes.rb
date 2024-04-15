@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :vaccines, only: [:create]
-  resources :patients, only: [:create]
+  resources :patients, only: [:create] do
+    get 'vaccine_card', to: 'patients#vaccine_card_informations', on: :member
+  end
+
   resources :vaccinate, only: [:create]
 end

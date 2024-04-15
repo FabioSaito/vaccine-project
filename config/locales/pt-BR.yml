@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    attributes:
+      vaccine/dose:
+        first: "Primeira dose"
+        second: "Segunda dose"
+        third: "Terceira dose"
+        first_booster: "Primeira dose de reforço"
+        second_booster: "Segunda dose de reforço"

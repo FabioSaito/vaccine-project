@@ -42,4 +42,69 @@ RSpec.describe "Patients", type: :request do
       end
     end
   end
+
+  describe 'GET /vaccine_card_informations' do
+    context 'when patient exists' do
+      let(:patient) { Patient.create!(name: 'Joao') }
+      let(:vaccine_first) { Vaccine.create!(name: 'Tetra Valente', slug: 'tetra_valente', dose: 'first') }
+      let(:vaccine_first_booster) { Vaccine.create!(name: 'Tetra Valente', slug: 'tetra_valente', dose: 'first_booster') }
+
+      let(:expected_response) do
+        [
+          {
+            "name"=>"Tetra Valente",
+            "shot_date"=>DateTime.current.strftime('%d-%m-%Y'),
+            "dose"=>"Primeira dose"
+          },
+          {
+            "name"=>"Tetra Valente",
+            "shot_date"=>DateTime.current.strftime('%d-%m-%Y'),
+            "dose"=>"Primeira dose de reforço"
+          }
+        ]
+      end
+
+      it 'returns a status code of 200' do
+        get vaccine_card_patient_path(patient)
+
+        expect(response).to have_http_status(:ok)
+      end
+
+
+      context 'when patient has vaccines' do
+        before do
+          patient.vaccine_card.vaccines << vaccine_first
+          patient.vaccine_card.vaccines << vaccine_first_booster
+        end
+
+        it 'returns the vaccine card information' do
+          get vaccine_card_patient_path(patient)
+
+          expect(response.parsed_body).to eq(expected_response)
+        end
+      end
+
+      context 'when patient has no vaccines' do
+        it 'returns empty vaccine card information' do
+          get vaccine_card_patient_path(patient)
+
+          expect(response.parsed_body).to eq([])
+        end
+      end
+    end
+
+    context 'when patient does not exist' do
+      it 'returns a status code of 422' do
+        get vaccine_card_patient_path(-1)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'returns an error message' do
+        get vaccine_card_patient_path(-1)
+
+        expect(response.parsed_body['message']).to eq('Patient not found')
+      end
+    end
+  end
 end
