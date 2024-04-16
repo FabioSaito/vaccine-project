@@ -1,5 +1,5 @@
 class PatientsController < ApplicationController
-  before_action :set_patient , only: [:vaccine_card_informations]
+  before_action :set_patient , only: [:destroy, :vaccine_card_informations]
 
   def create
     @patient = Patient.new(name: params[:name])
@@ -9,6 +9,12 @@ class PatientsController < ApplicationController
     else
       render json: { message: @patient.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @patient.destroy
+
+    render status: :no_content
   end
 
   def vaccine_card_informations

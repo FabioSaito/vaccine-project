@@ -6,7 +6,8 @@ RSpec.describe "Patients", type: :request do
       let(:valid_params) { { name: 'Joao' } }
 
       it 'creates a new patient' do
-        expect { post patients_path, params: valid_params }.to change(Patient, :count).by(1)
+        expect { post patients_path, params: valid_params }
+          .to change(Patient, :count).by(1)
       end
 
       it 'returns a success message' do
@@ -26,7 +27,8 @@ RSpec.describe "Patients", type: :request do
       let(:invalid_params) { { name: nil } }
 
       it 'does not create a new patient' do
-        expect { post patients_path, params: invalid_params }.not_to change(Patient, :count)
+        expect { post patients_path, params: invalid_params }
+          .not_to change(Patient, :count)
       end
 
       it 'returns an error message' do
@@ -40,6 +42,22 @@ RSpec.describe "Patients", type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:patient) { Patient.create!(name: 'Ze') }
+
+    it 'deletes the patient' do
+      delete patient_path(patient.id)
+
+      expect(Patient.exists?(patient.id)).to be false
+    end
+
+    it 'returns http code 204' do
+      delete patient_path(patient.id)
+
+      expect(response).to have_http_status(:no_content)
     end
   end
 
