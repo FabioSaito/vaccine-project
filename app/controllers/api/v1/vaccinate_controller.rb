@@ -1,6 +1,6 @@
 module Api
   module V1
-    class VaccinateController < ApplicationController
+    class VaccinateController < ApiController
       before_action :set_patient
       before_action :set_vaccine
 
@@ -22,28 +22,12 @@ module Api
 
       private
 
-      def set_patient
-        @patient = Patient.find_by(id: params[:patient_id])
-
-        render_response('Patient not found', :unprocessable_entity) unless @patient
-      end
-
-      def set_vaccine
-        @vaccine = Vaccine.find_by(slug: params[:vaccine_slug], dose: params[:vaccine_dose])
-
-        render_response('Invalid vaccine', :unprocessable_entity) unless @vaccine
-      end
-
       def patient_has_vaccine?
         patient_vaccines.include?(@vaccine)
       end
 
       def patient_vaccines
         @patient_vaccines ||= @patient.vaccine_card.vaccines
-      end
-
-      def render_response(message, status)
-        render json: { message: message}, status: status
       end
     end
   end
