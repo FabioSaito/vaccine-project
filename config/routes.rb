@@ -8,12 +8,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :vaccines, only: [:create]
-  resources :patients, only: [:create, :destroy] do
-    get 'vaccine_card', to: 'patients#vaccine_card_informations', on: :member
+  namespace :api do
+    namespace :v1 do
+      resources :vaccines, only: [:create]
+      resources :patients, only: [:create, :destroy] do
+        get 'vaccine_card', to: 'patients#vaccine_card_informations', on: :member
+      end
+
+      delete '/vaccinate', to: 'vaccinate#destroy'
+
+      resources :vaccinate, only: [:create]
+    end
   end
-
-  delete '/vaccinate', to: 'vaccinate#destroy'
-
-  resources :vaccinate, only: [:create]
 end
