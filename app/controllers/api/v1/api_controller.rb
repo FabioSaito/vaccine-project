@@ -1,6 +1,8 @@
 module Api
   module V1
-    class ApiController < ActionController::API
+    class ApiController < ApplicationController
+      before_action :authenticate!
+
       private
 
       def set_patient
