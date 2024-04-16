@@ -1,7 +1,7 @@
 module Api
   module V1
-    class PatientsController < ApplicationController
-      before_action :set_patient , only: [:destroy, :vaccine_card_informations]
+    class PatientsController < ApiController
+      before_action :current_patient , only: [:destroy, :vaccine_card_informations]
 
       def create
         @patient = Patient.new(name: params[:name])
@@ -21,14 +21,6 @@ module Api
 
       def vaccine_card_informations
         render json: VaccineCardInformation.call(@patient), status: :ok
-      end
-
-      private
-
-      def set_patient
-        @patient = Patient.find_by(id: params[:id])
-
-        render json: { message: 'Patient not found'}, status: :unprocessable_entity unless @patient
       end
     end
   end

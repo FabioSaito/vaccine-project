@@ -1,6 +1,6 @@
 module Api
   module V1
-    class VaccinesController < ApplicationController
+    class VaccinesController < ApiController
       def create
         @vaccine = Vaccine.new(name: params[:name], slug: params[:slug])
 
