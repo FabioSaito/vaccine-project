@@ -13,5 +13,7 @@ Rails.application.routes.draw do
     get 'vaccine_card', to: 'patients#vaccine_card_informations', on: :member
   end
 
+  delete '/vaccinate', to: 'vaccinate#destroy'
+
   resources :vaccinate, only: [:create]
 end

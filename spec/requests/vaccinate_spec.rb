@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Vaccinate", type: :request do
-  let!(:patient) { Patient.create!(name: 'Joao') }
-  let!(:vaccine) { Vaccine.create!(name: 'Test Vaccine', slug: 'test_vaccine', dose: 'first') }
-
   describe 'POST /vaccinate' do
+    let!(:patient) { Patient.create!(name: 'Joao') }
+    let!(:vaccine) { Vaccine.create!(name: 'Test Vaccine', slug: 'test_vaccine', dose: 'first') }
+
     context 'with valid parameters' do
       let(:valid_params) { { patient_id: patient.id, vaccine_slug: vaccine.slug, vaccine_dose: vaccine.dose } }
 
@@ -62,6 +62,57 @@ RSpec.describe "Vaccinate", type: :request do
 
           expect(response).to have_http_status(:unprocessable_entity)
         end
+      end
+    end
+  end
+
+  describe 'DELETE /vaccinate' do
+    let!(:patient) { Patient.create!(name: 'Joao') }
+    let!(:vaccine) { Vaccine.create!(name: 'Test Vaccine', slug: 'test_vaccine', dose: 'first') }
+
+    let(:vaccine_params) do
+      {
+        patient_id: patient.id,
+        vaccine_slug: vaccine.slug,
+        vaccine_dose: vaccine.dose
+      }
+    end
+
+    context 'when patient has the vaccine' do
+      before do
+        patient.vaccine_card.vaccines << vaccine
+      end
+
+      it 'removes the vaccine from the patient' do
+        expect { delete vaccinate_index_path, params: vaccine_params }
+          .to change(patient.vaccine_card.vaccines, :count).by(-1)
+
+        expect(patient.vaccine_card.vaccines).not_to include(vaccine)
+      end
+
+      it 'returns http status 204' do
+        delete vaccinate_index_path, params: vaccine_params
+
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context 'when patient does not have the vaccine' do
+      it 'does not change the number of vaccines on patient vaccine_card' do
+        expect { delete vaccinate_index_path, params: vaccine_params }
+          .not_to change(patient.vaccine_card.vaccines, :count)
+      end
+
+      it 'returns an error message' do
+        delete vaccinate_index_path, params: vaccine_params
+
+        expect(response.parsed_body['message']).to eq('Patient does not have this vaccine')
+      end
+
+      it 'returns http status 422' do
+        delete vaccinate_index_path, params: vaccine_params
+
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end

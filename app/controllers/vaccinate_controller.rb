@@ -3,15 +3,22 @@ class VaccinateController < ApplicationController
   before_action :set_vaccine
 
   def create
-    render_response('Vaccine already registered', :unprocessable_entity) if patient_has_vaccine?
+    return render_response('Vaccine already registered', :unprocessable_entity) if patient_has_vaccine?
 
     patient_vaccines << @vaccine
 
     render_response('Vaccination registered', :ok)
   end
 
-  private
+  def destroy
+    return render_response('Patient does not have this vaccine', :unprocessable_entity) unless patient_has_vaccine?
 
+    @patient.vaccine_card.vaccines.delete(@vaccine)
+
+    render status: :no_content
+  end
+
+  private
 
   def set_patient
     @patient = Patient.find_by(id: params[:patient_id])
