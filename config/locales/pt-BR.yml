@@ -1,4 +1,7 @@
 pt-BR:
+  errors:
+    messages:
+      taken: "já está em uso"
   activerecord:
     attributes:
       vaccine/dose:
@@ -7,3 +10,9 @@ pt-BR:
         third: "Terceira dose"
         first_booster: "Primeira dose de reforço"
         second_booster: "Segunda dose de reforço"
+      vaccine:
+        name: "Nome"
+        dose: "Dose"
+        slug: "Identificador"
+      patient:
+        name: "Nome"
