@@ -12,4 +12,3 @@ class Vaccine < ApplicationRecord
     second_booster: 4
   }, _suffix: true
 end
-
