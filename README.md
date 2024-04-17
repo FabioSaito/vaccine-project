@@ -1,24 +1,112 @@
-# README
+# Vaccination Card
+This project aims to expose an API for managing a vaccination system with basic functionalities like registration, deletion and consulting.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Configurations
+* Ruby version: 3.2.2
+* Rails version: 7.1.3
 
-Things you may want to cover:
+## Prerequisite:
+`Docker`
 
-* Ruby version
+## Running the project
+### Build image
+`$ docker-compose build`
 
-* System dependencies
+### Run server
+`$ docker-compose up`
 
-* Configuration
+The server will be running on port `3000`
+URL: `localhost:3000`
 
-* Database creation
+## Endpoints
+### Register vaccine
+`POST /api/v1/vaccines`
 
-* Database initialization
+```
+body:
+  {
+    "name": "Vaccine Name",
+    "slug": "unique_identifier"
+  }
+```
 
-* How to run the test suite
+### Register patient
+`POST /api/v1/patients`
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+body:
+  {
+    "name": "Patient Name"
+  }
+```
 
-* Deployment instructions
+### Patient Deletion
+`DELETE /api/v1/patients/{patient_id}`
 
-* ...
+### Register vaccination
+`POST /api/v1/vaccinate`
+
+```
+body:
+  {
+    "patient_id": patient_id,
+    "vaccine_slug": "vaccine_unique_identifier",
+    "vaccine_dose": "vaccine_dose"
+  }
+```
+
+### Show patient vaccination card
+`POST /api/v1/patients/{patient_id}/vaccine_card`
+
+```
+response_body_example:
+  [
+    {
+      "name": "Tetra Valente",
+      "shot_date": "14-04-2024",
+      "dose": "Primeira dose de reforço"
+    },
+    {
+      "name": "BCG",
+      "shot_date": "17-04-2024",
+      "dose": "Primeira dose"
+    }
+  ]
+```
+
+### Exclude vaccination from patient
+`POST /api/v1/vaccinate`
+```
+body:
+  {
+    "patient_id": {patient_id},
+    "vaccine_slug": "vaccine_slug",
+    "vaccine_dose": "vaccine_dose"
+  }
+```
+
+## Bonus
+There is a authentication running on those endpoint
+It is a simple JWT that is created on user creation or retrieved when accessing the corresponding endpoint
+
+### Create user
+`POST /signup`
+
+```
+body:
+  {
+    "email": "user@email.com",
+    "password": "user_password"
+  }
+```
+
+### Retrieve JWT
+`POST /login`
+
+```
+body:
+  {
+    "email": "user@email.com",
+    "password": "user_password"
+  }
+```
