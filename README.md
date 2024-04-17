@@ -18,6 +18,9 @@ This project aims to expose an API for managing a vaccination system with basic 
 The server will be running on port `3000`
 URL: `localhost:3000`
 
+### Run tests
+`$ docker-compose exec web bundle exec rspec`
+
 ## Endpoints
 ### Register vaccine
 `POST /api/v1/vaccines`
@@ -76,6 +79,7 @@ response_body_example:
 
 ### Exclude vaccination from patient
 `POST /api/v1/vaccinate`
+
 ```
 body:
   {
@@ -86,8 +90,8 @@ body:
 ```
 
 ## Bonus
-There is a authentication running on those endpoint
-It is a simple JWT that is created on user creation or retrieved when accessing the corresponding endpoint
+There is an authentication running on those endpoint
+It is a simple JWT that is generated on user creation or retrieved when accessing the corresponding endpoint
 
 ### Create user
 `POST /signup`
