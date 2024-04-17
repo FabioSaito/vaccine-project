@@ -114,3 +114,15 @@ body:
     "password": "user_password"
   }
 ```
+
+## Diagram
+![image](https://github.com/FabioSaito/vaccine-project/assets/29253127/8652b561-20fb-49ba-9f67-478514f07546)
+
+In above diagram, those relations are represented
+- `patient` has_one `vaccine_card`
+- `vaccine_card` belongs_to `patient`
+
+- `vaccine_cards_vaccines` table holds the association between `vaccine_card` and `vaccine`
+- `vaccine_card` and `vaccine` have a `has_and_belongs_to_many` between them
+
+
